@@ -11,7 +11,7 @@ using namespace std;
 //Global variables:
 string master = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-int* covert(string rotor) {
+int* convert(string rotor) {
     int rotor_forwards[26], rotor_backwards[26];
     char rotor_value;
     int master_value;
@@ -25,15 +25,46 @@ int* covert(string rotor) {
     return rotor_forwards, rotor_backwards;
 }
 
-int** rotorWheels(){
+int* rotorWheels(){
     string w1 = "PEZUOHXSCVFMTBGLRINQJWAYDK", w2 = "ZOUESYDKFWPCIQXHMVBLGNJRAT", w3 = "EHRVXGAOBQUSIMZFLYNWKTPDJC", w4 = "IMETCGFRAYSQBZXWLHKDVUPOJN", w5 = "QWERTZUIOASDFGHJKPYXCVBNML";
+    int *rot1_for, *rot1_bac, *rot2_for, *rot2_bac, *rot3_for, *rot3_bac, *rot4_for, *rot4_bac, *rot5_for, *rot5_bac;
+    //int **rotors_forwards, **rotors_backwards;
 
+    rot1_for, rot1_bac = convert(w1);
+    rot2_for, rot2_bac = convert(w2);
+    rot3_for, rot3_bac = convert(w3);
+    rot4_for, rot4_bac = convert(w4);
+    rot5_for, rot5_bac = convert(w5);
+
+    //rotors_forwards = {rot1_for, rot2_for, rot3_for, rot4_for, rot5_for};
+
+    int i = 0;
+    int select;
+    string taken;
+    char temp;
+    while (i < 3){
+        cout << "Choose which rotor to use for position " << i << " (1 to 5).\n";
+        cin >> select;
+        temp = select + '0';
+        if (taken.find(temp) == -1){
+            if (select < 6 && select > 0){
+                taken.push_back(temp);
+                i += 1;
+            } else {
+                cout << "Invalid number.\n";
+            }
+        } else {
+            cout << "Rotors can only be used once.\n";
+        }
+    }
+
+    //return rotors_forwards[taken[0]-1], rotors_forwards[taken[0]-1]
     return;
 }
 
 class Enigma {
 public:
-    string rotor1_f, rotor1_b, rotor2_f, rotor2_b, rotor3_f, rotor3_b; 
+    int *rotor1_f, *rotor1_b, *rotor2_f, *rotor2_b, *rotor3_f, *rotor3_b; 
     pair <char, char> plugs[10];
     int offset1 = 0, offset2 = 0, offset3 = 0;
     int plug_count = 0;
