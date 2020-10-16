@@ -68,6 +68,34 @@ public:
     pair <char, char> plugs[10];
     int offset1 = 0, offset2 = 0, offset3 = 0;
     int plug_count = 0;
+
+    void encode(){
+        string output = "";
+        string input = "";
+        int letter_index;
+        cout << "Enter message >";
+        cin >> input;
+
+        for(int i = 0; i < input.length(); i++){
+            if( (int)input[i] > 96 && (int)input[i] < 123){
+                input[i] = (int)input[i] - 32;
+            }
+            if( (int)input[i] > 64 && (int)input[i] < 91){
+                letter_index = master.find(input[i]);
+
+                for(int j = 0; j < plug_count; j++){
+                    //Left off here when I noticed the python version had a problem.
+                }
+            }
+        }
+
+        return;
+    }
+
+    void modify(){
+
+        return;
+    }
 };
 
 int main(){
