@@ -6,4 +6,4 @@ Unfortunetly I was an idiot and forgot to comment the logic behind my old enigma
 
 My python enigma machine can be found here: https://github.com/ldmcdona/Mostly_Enigma
 
-What I have so far is just some initial ideas on how it might work.
+Still shaking some of the rust off my C++ skills so expect some jank. 
