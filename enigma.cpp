@@ -5,12 +5,28 @@
 #include <string>
 #include <utility>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
-//Global variables:
-string master = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+/*
+Plan B in case I cant get rotorWheels() and convert() working.
 
+int rotor1_f[26] = [15, 4, 25, 20, 14, 7, 23, 18, 2, 21, 5, 12, 19, 1, 6, 11, 17, 8, 13, 16, 9, 22, 0, 24, 3, 10];
+int rotor2_f[26] = [25, 14, 20, 4, 18, 24, 3, 10, 5, 22, 15, 2, 8, 16, 23, 7, 12, 21, 1, 11, 6, 13, 9, 17, 0, 19];
+int rotor3_f[26] = [4, 7, 17, 21, 23, 6, 0, 14, 1, 16, 20, 18, 8, 12, 25, 5, 11, 24, 13, 22, 10, 19, 15, 3, 9, 2];
+int rotor4_f[26] = [8, 12, 4, 19, 2, 6, 5, 17, 0, 24, 18, 16, 1, 25, 23, 22, 11, 7, 10, 3, 21, 20, 15, 14, 9, 13];
+int rotor5_f[26] = [16, 22, 4, 17, 19, 25, 20, 8, 14, 0, 18, 3, 5, 6, 7, 9, 10, 15, 24, 23, 2, 21, 1, 13, 12, 11];
+int rotor1_b[26] = [];
+int rotor2_b[26] = [];
+int rotor3_b[26] = [];
+int rotor4_b[26] = [];
+int rotor5_b[26] = [];
+*/
+
+//Global variables:
+const string master = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+//                     01234567890123456789012345
 int* convert(string rotor) {
     int rotor_forwards[26], rotor_backwards[26];
     char rotor_value;
@@ -66,7 +82,8 @@ class Enigma {
 public:
     int *rotor1_f, *rotor1_b, *rotor2_f, *rotor2_b, *rotor3_f, *rotor3_b; 
     //pair <char, char> plugs[10];
-    int *plugs_forwards, *plugs_backwards;
+    //int *plugs_forwards, *plugs_backwards;
+    vector<int> plugs_forwards, plugs_backwards;
     int offset1 = 0, offset2 = 0, offset3 = 0;
     int plug_count = 0;
 
@@ -178,7 +195,45 @@ public:
 
     //Probably gonna simplify this compared to the python version.
     void modify(){
-        
+        char answer, a, b;
+        int temp;
+        vector<char> taken = {};
+        cout << "Change Plugs? (y/n)" << "\n";
+        cin >> answer;
+        if(answer == 'y'){
+            cout << "Enter the number of plugs you want to use. (0 to 10)" << "\n";
+            cin >> temp;
+            if(temp > 10 || temp < 0){
+                cout << "Invalid number entered." << "\n";
+                return;
+            }
+            for(int i = 0; i < temp; i++){
+                cout << "Plug " << i << "\n";
+                cout << "Enter first letter in pair. (A-Z)" << "\n";
+                cin >> a;
+                cout << "Enter second letter in pair. (A-Z)" << "\n";
+                cin >> b;
+                if( (int)a > 90 || (int)a < 65 || (int)b > 90 || (int)b < 65){
+                    cout << "Invalid character entered." << "\n";
+                    return;
+                }
+                for(int j = 0; j < taken.size(); j++){
+                    if(a == taken[j] || b == taken[j]){
+                        cout << "Character already in use." << "\n";
+                        plugs_forwards = {};
+                        plugs_backwards = {};
+                        return;
+                    }
+                }
+                plugs_forwards.push_back(master.find(a));
+                plugs_backwards.push_back(master.find(b));
+                taken.push_back(a);
+                taken.push_back(b);
+            }
+            plug_count = temp;
+        }
+        cout << "Swap rotors? (y/n)" << "\n";
+        //Left off here.
         return;
     }
 };
