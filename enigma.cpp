@@ -9,26 +9,18 @@
 
 using namespace std;
 
-/*
-Plan B in case I cant get rotorWheels() and convert() working.
-
-int rotor1_f[26] = [15, 4, 25, 20, 14, 7, 23, 18, 2, 21, 5, 12, 19, 1, 6, 11, 17, 8, 13, 16, 9, 22, 0, 24, 3, 10];
-int rotor2_f[26] = [25, 14, 20, 4, 18, 24, 3, 10, 5, 22, 15, 2, 8, 16, 23, 7, 12, 21, 1, 11, 6, 13, 9, 17, 0, 19];
-int rotor3_f[26] = [4, 7, 17, 21, 23, 6, 0, 14, 1, 16, 20, 18, 8, 12, 25, 5, 11, 24, 13, 22, 10, 19, 15, 3, 9, 2];
-int rotor4_f[26] = [8, 12, 4, 19, 2, 6, 5, 17, 0, 24, 18, 16, 1, 25, 23, 22, 11, 7, 10, 3, 21, 20, 15, 14, 9, 13];
-int rotor5_f[26] = [16, 22, 4, 17, 19, 25, 20, 8, 14, 0, 18, 3, 5, 6, 7, 9, 10, 15, 24, 23, 2, 21, 1, 13, 12, 11];
-int rotor1_b[26] = [];
-int rotor2_b[26] = [];
-int rotor3_b[26] = [];
-int rotor4_b[26] = [];
-int rotor5_b[26] = [];
-*/
-
 //Global variables:
 const string master = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 //                     01234567890123456789012345
-int* convert(string rotor) {
-    int rotor_forwards[26], rotor_backwards[26];
+
+pair <vector<int>, vector<int>> convert(string rotor) {
+    //int rotor_forwards[26], rotor_backwards[26];
+    vector<int> rotor_forwards, rotor_backwards;
+    for(int i=0; i < 26; i++){
+        rotor_forwards.push_back(0);
+        rotor_backwards.push_back(0);
+    }
+
     char rotor_value;
     int master_value;
     for(int i = 0; i < 26; i++){
@@ -38,52 +30,72 @@ int* convert(string rotor) {
         rotor_backwards[master_value] = i;
     }
 
-    return rotor_forwards, rotor_backwards;
+    cout << "rotor_forwards is size " << rotor_forwards.size() << "\n";
+
+    pair <vector<int>, vector<int>> x;
+    x.first = rotor_forwards;
+    x.second = rotor_backwards;
+    return x;
 }
 
-int* rotorWheels(){
+vector<vector<int>> rotorWheels(){
     string w1 = "PEZUOHXSCVFMTBGLRINQJWAYDK", w2 = "ZOUESYDKFWPCIQXHMVBLGNJRAT", w3 = "EHRVXGAOBQUSIMZFLYNWKTPDJC", w4 = "IMETCGFRAYSQBZXWLHKDVUPOJN", w5 = "QWERTZUIOASDFGHJKPYXCVBNML";
-    int *rot1_for, *rot1_bac, *rot2_for, *rot2_bac, *rot3_for, *rot3_bac, *rot4_for, *rot4_bac, *rot5_for, *rot5_bac;
-    //int **rotors_forwards, **rotors_backwards;
+    string w[5] = {w1, w2, w3, w4, w5};
+    vector<int> rot1_for, rot1_bac, rot2_for, rot2_bac, rot3_for, rot3_bac, rot4_for, rot4_bac, rot5_for, rot5_bac;
+    vector<int> r_f[5] = {rot1_for, rot2_for, rot3_for, rot4_for, rot5_for};
+    vector<int> r_b[5] = {rot1_bac, rot2_bac, rot3_bac, rot4_bac, rot5_bac};
+    vector<vector<int>> rotors_forwards, rotors_backwards;
+    pair <vector<int>, vector<int>> r1, r2, r3, r4, r5;
+    pair <vector<int>, vector<int>> r[5] = {r1, r2, r3, r4, r5};
 
-    rot1_for, rot1_bac = convert(w1);
-    rot2_for, rot2_bac = convert(w2);
-    rot3_for, rot3_bac = convert(w3);
-    rot4_for, rot4_bac = convert(w4);
-    rot5_for, rot5_bac = convert(w5);
+    //Something about these for-loops isn't working I think, cause the return from convert should be working now I think.
 
-    //rotors_forwards = {rot1_for, rot2_for, rot3_for, rot4_for, rot5_for};
-
-    int i = 0;
-    int select;
-    string taken;
-    char temp;
-    while (i < 3){
-        cout << "Choose which rotor to use for position " << i << " (1 to 5).\n";
-        cin >> select;
-        temp = select + '0';
-        if (taken.find(temp) == -1){
-            if (select < 6 && select > 0){
-                taken.push_back(temp);
-                i += 1;
-            } else {
-                cout << "Invalid number.\n";
-            }
-        } else {
-            cout << "Rotors can only be used once.\n";
-        }
+    for(int i=0; i<5; i++){
+        r[i] = convert(w[i]);
     }
 
+    for(int i=0; i<5; i++){
+        r_f[i] = r[i].first;
+        r_b[i] = r[i].second;
+    }
+
+    //cout << "rot1_for is size " << rot1_for.size() << "\n";
+
+    rotors_forwards.push_back(rot1_for);
+    rotors_forwards.push_back(rot2_for);
+    rotors_forwards.push_back(rot3_for);
+    rotors_forwards.push_back(rot4_for);
+    rotors_forwards.push_back(rot5_for);
+
+    rotors_backwards.push_back(rot1_bac);
+    rotors_backwards.push_back(rot2_bac);
+    rotors_backwards.push_back(rot3_bac);
+    rotors_backwards.push_back(rot4_bac);
+    rotors_backwards.push_back(rot5_bac);
+
     //return rotors_forwards[taken[0]-1], rotors_forwards[taken[0]-1]
-    return;
+    
+    for(int i=0; i<5; i++){
+        cout << "Rotors_Forwards is size " << rotors_forwards.size() << "\n";
+        cout << "The first rotor in Rotors_Forwards is size " << rotors_forwards[0].size() << "\n";
+        cout << "Rotor_f " << i << "\n";
+        for(int j=0; j<26; j++){
+            cout << rotors_forwards[i][j];
+        }
+        cout << "\n";
+    }
+
+    return rotors_forwards, rotors_backwards;
 }
 
 class Enigma {
 public:
-    int *rotor1_f, *rotor1_b, *rotor2_f, *rotor2_b, *rotor3_f, *rotor3_b; 
+    //int *rotor1_f, *rotor1_b, *rotor2_f, *rotor2_b, *rotor3_f, *rotor3_b; 
     //pair <char, char> plugs[10];
     //int *plugs_forwards, *plugs_backwards;
     vector<int> plugs_forwards, plugs_backwards;
+    vector<vector<int>> rotors_forwards, rotors_backwards = rotorWheels();
+    vector<int> rotor1_f, rotor1_b, rotor2_f, rotor2_b, rotor3_f, rotor3_b;
     int offset1 = 0, offset2 = 0, offset3 = 0;
     int plug_count = 0;
 
@@ -193,10 +205,44 @@ public:
         return;
     }
 
+    void setup(){
+
+        int i = 1;
+        int select;
+        int set[3];
+        string taken;
+        char temp;
+        while (i < 4){
+            cout << "Choose which rotor to use for position " << i << " (1 to 5).\n";
+            cin >> select;
+            temp = select + '0';
+            if (taken.find(temp) == -1){
+                if (select < 6 && select > 0){
+                    taken.push_back(temp);
+                    set[i-1] = select;
+                    i += 1;
+                } else {
+                    cout << "Invalid number.\n";
+                }
+            } else {
+                cout << "Rotors can only be used once.\n";
+            }
+        }
+
+        rotor1_f = rotors_forwards[set[0]];
+        rotor2_f = rotors_forwards[set[1]];
+        rotor3_f = rotors_forwards[set[2]];
+        rotor1_b = rotors_backwards[set[0]];
+        rotor2_b = rotors_backwards[set[1]];
+        rotor3_b = rotors_backwards[set[2]];
+
+        return;
+    }
+
     //Probably gonna simplify this compared to the python version.
     void modify(){
         char answer, a, b;
-        int temp;
+        int temp, o1, o2, o3;
         vector<char> taken = {};
         cout << "Change Plugs? (y/n)" << "\n";
         cin >> answer;
@@ -232,13 +278,55 @@ public:
             }
             plug_count = temp;
         }
+
         cout << "Swap rotors? (y/n)" << "\n";
-        //Left off here.
+        cin >> answer;
+        if(answer == 'y'){
+            //Changing how this works because it's stupid.
+            //It's smarter to just use a if-nest or something. 
+            setup();
+        }
+
+        cout << "Set rotor offset? (y/n)" << "\n";
+        cin >> answer;
+        if(answer == 'y'){
+            cout << "Enter offset for rotor 1 (0 to 25)" << "\n";
+            cin >> o1;
+            cout << "Enter offset for rotor 2 (0 to 25)" << "\n";
+            cin >> o2;
+            cout << "Enter offset for rotor 3 (0 to 25)" << "\n";
+            cin >> o3;
+            if(o1 > 25 || o1 < 0 || o2 > 25 || o2 < 0 || o3 > 25 || o3 < 0){
+                cout << "Invalid number entered." << "\n";
+                return;
+            }
+            offset1 = o1;
+            offset2 = o2;
+            offset3 = o3;
+        }
+        cout << "Modification complete." << "\n";
         return;
     }
 };
 
 int main(){
+    char command;
+    Enigma box;
+    box.setup();
+    while(true){
+        cout << "Enigma Machine.\nEnter E to encode a message.\nEnter M to change the machines settings.\nEnter Q to quit.\n";
+        cin >> command;
+        if(command == 'E'){
+            box.encode();
+        }else if(command == 'M'){
+            box.modify();
+        }else if(command == 'Q'){
+            break;
+        }else{
+            cout << "Invalid Input\n";
+        }
+
+    }
 
     return 0;
 }
