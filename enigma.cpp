@@ -14,7 +14,6 @@ const string master = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 //                     01234567890123456789012345
 
 pair <vector<int>, vector<int>> convert(string rotor) {
-    //int rotor_forwards[26], rotor_backwards[26];
     vector<int> rotor_forwards, rotor_backwards;
     for(int i=0; i < 26; i++){
         rotor_forwards.push_back(0);
@@ -30,8 +29,6 @@ pair <vector<int>, vector<int>> convert(string rotor) {
         rotor_backwards[master_value] = i;
     }
 
-    //cout << "rotor_forwards is size " << rotor_forwards.size() << "\n";
-
     pair <vector<int>, vector<int>> x;
     x.first = rotor_forwards;
     x.second = rotor_backwards;
@@ -41,9 +38,6 @@ pair <vector<int>, vector<int>> convert(string rotor) {
 pair <vector<vector<int>>, vector<vector<int>>> rotorWheels(){
     string w1 = "PEZUOHXSCVFMTBGLRINQJWAYDK", w2 = "ZOUESYDKFWPCIQXHMVBLGNJRAT", w3 = "EHRVXGAOBQUSIMZFLYNWKTPDJC", w4 = "IMETCGFRAYSQBZXWLHKDVUPOJN", w5 = "QWERTZUIOASDFGHJKPYXCVBNML";
     string w[5] = {w1, w2, w3, w4, w5};
-    //vector<int> rot1_for, rot1_bac, rot2_for, rot2_bac, rot3_for, rot3_bac, rot4_for, rot4_bac, rot5_for, rot5_bac;
-    //vector<int> r_f[5] = {rot1_for, rot2_for, rot3_for, rot4_for, rot5_for};
-    //vector<int> r_b[5] = {rot1_bac, rot2_bac, rot3_bac, rot4_bac, rot5_bac};
     vector<vector<int>> rotors_forwards, rotors_backwards;
     pair <vector<int>, vector<int>> r1, r2, r3, r4, r5;
     pair <vector<int>, vector<int>> r[5] = {r1, r2, r3, r4, r5};
@@ -57,20 +51,6 @@ pair <vector<vector<int>>, vector<vector<int>>> rotorWheels(){
         rotors_backwards.push_back(r[i].second);
     }
 
-    /*
-    for(int i=0; i<5; i++){
-        cout << "Rotor " << i << "\n";
-        for(int j=0; j<26; j++){
-            cout << rotors_forwards[i][j] << " ";
-        }
-        cout << "\n";
-        for(int j=0; j<26; j++){
-            cout << rotors_backwards[i][j] << " ";
-        }
-        cout << "\n";
-    }
-    */
-
     pair <vector<vector<int>>, vector<vector<int>>> x;
     x.first = rotors_forwards;
     x.second = rotors_backwards;
@@ -79,18 +59,12 @@ pair <vector<vector<int>>, vector<vector<int>>> rotorWheels(){
 
 class Enigma {
 public:
-    //int *rotor1_f, *rotor1_b, *rotor2_f, *rotor2_b, *rotor3_f, *rotor3_b; 
-    //pair <char, char> plugs[10];
-    //int *plugs_forwards, *plugs_backwards;
-    vector<int> plugs_forwards, plugs_backwards;
-    vector<vector<int>> rotors_forwards, rotors_backwards; //= rotorWheels();
-    vector<int> rotor1_f, rotor1_b, rotor2_f, rotor2_b, rotor3_f, rotor3_b;
+    vector<int> plugs_forwards = {}, plugs_backwards = {};
+    vector<vector<int>> rotors_forwards = {}, rotors_backwards = {};
+    vector<int> rotor1_f = {}, rotor1_b = {}, rotor2_f = {}, rotor2_b = {}, rotor3_f = {}, rotor3_b = {};
     int offset1 = 0, offset2 = 0, offset3 = 0;
     int plug_count = 0;
     pair <vector<vector<int>>, vector<vector<int>>> x = rotorWheels();
-
-    //Plugboard is broken and stupid. Gonna rebuild that sucker with this bad body. Hopefully.
-    vector<pair<int, int>> plugs;
 
     void encode(){
         string output = "";
@@ -107,16 +81,17 @@ public:
             if( (int)input[i] > 96 && (int)input[i] < 123){
                 input[i] = (int)input[i] - 32;
             }
-            cout << input[i] << "\n";
+
             //If character is an uppercase letter, get it's master index
             if( (int)input[i] > 64 && (int)input[i] < 91){
                 letter_index = master.find(input[i]);
 
                 //First we check it against the plugboard
                 for(int j = 0; j < plug_count; j++){
-                    if(plugs_forwards[j] == letter_index)
+                    if(plugs_forwards[j] == letter_index){
                         letter_index = plugs_backwards[j];
                         break;
+                    }
                 }
 
                 //Then we do the big mathematical index dance.
@@ -127,8 +102,7 @@ public:
                 //And the value it's mapped to isn't in it's 'normal' spot either, it is also affected by the offset.
                 //These misaligned indexes work as follows:
 
-                cout << letter_index << " ";
-                //cout << "\n" << rotor1_f[0] << "\n";
+                //cout << letter_index << " ";
 
                 letter_index += offset1;
                 if(letter_index > 25){letter_index -= 26;}
@@ -136,7 +110,7 @@ public:
                 letter_index -= offset1;
                 if(letter_index < 0){letter_index += 26;}
 
-                cout << letter_index << " ";
+                //cout << letter_index << " ";
 
                 letter_index += offset2;
                 if(letter_index > 25){letter_index -= 26;}
@@ -144,7 +118,7 @@ public:
                 letter_index -= offset2;
                 if(letter_index < 0){letter_index += 26;}
 
-                cout << letter_index << " ";
+                //cout << letter_index << " ";
 
                 letter_index += offset3;
                 if(letter_index > 25){letter_index -= 26;}
@@ -152,13 +126,13 @@ public:
                 letter_index -= offset3;
                 if(letter_index < 0){letter_index += 26;}
 
-                cout << letter_index << " ";
+                //cout << letter_index << " ";
 
                 //After the third rotor we go to the opposite input.
                 letter_index += 13;
                 if(letter_index > 25){letter_index -= 26;}
 
-                cout << letter_index << " ";
+                //cout << letter_index << " ";
 
                 //Then we go through the whole thing again in reverse.
                 letter_index += offset3;
@@ -167,7 +141,7 @@ public:
                 letter_index -= offset3;
                 if(letter_index < 0){letter_index += 26;}
 
-                cout << letter_index << " ";
+                //cout << letter_index << " ";
 
                 letter_index += offset2;
                 if(letter_index > 25){letter_index -= 26;}
@@ -175,7 +149,7 @@ public:
                 letter_index -= offset2;
                 if(letter_index < 0){letter_index += 26;}
 
-                cout << letter_index << " ";
+                //cout << letter_index << " ";
 
                 letter_index += offset1;
                 if(letter_index > 25){letter_index -= 26;}
@@ -183,7 +157,7 @@ public:
                 letter_index -= offset1;
                 if(letter_index < 0){letter_index += 26;}
 
-                cout << letter_index << " ";
+                //cout << letter_index << " ";
 
                 //Then we increment the rotors.
                 offset1 += 1;
@@ -199,11 +173,14 @@ public:
                     offset3 -= 26;
                 }
 
+                //cout << "\n" << master[letter_index] << "\n";
+
                 //Then we do the reverse plugs.
                 for(int j = 0; j < plug_count; j++){
-                    if(plugs_backwards[j] == letter_index)
-                        letter_index = plugs_forwards[j];
+                    if(plugs_forwards[j] == letter_index){
+                        letter_index = plugs_backwards[j];
                         break;
+                    }
                 }
 
                 //And finally we have our encoded letter.
@@ -286,7 +263,6 @@ public:
                         return;
                     }
                 }
-                //if this works then consolodate plugs.
                 plugs_forwards.push_back(master.find(a));
                 plugs_backwards.push_back(master.find(b));
                 plugs_forwards.push_back(master.find(b));
@@ -300,8 +276,7 @@ public:
         cout << "Swap rotors? (y/n)" << "\n";
         cin >> answer;
         if(answer == 'y'){
-            //Changing how this works because it's stupid.
-            //It's smarter to just use a if-nest or something. 
+            //Also simplified compared to the Python version. 
             setup();
         }
 
