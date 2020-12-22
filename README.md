@@ -2,7 +2,7 @@
 
 I'm redoing my old python enigma machine in C++.
 
-Unfortunetly I was an idiot and forgot to comment the logic behind my old enigma machine so I'm probably going to end up going back and untangling that before I move any further with this particular project.
+The current version 'works' but only with expected input. I still have to finish a few quality of life things and some testing.
 
 My python enigma machine can be found here: https://github.com/ldmcdona/Mostly_Enigma
 
